@@ -1,0 +1,74 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div id="listing" style="padding: 20px; width: 600px;">
+    {% if message %}
+    {{message}}
+    {% endif %}
+    <h2>Listing: {{ listing.name }}</h2>
+    {% if listing.is_closed %}
+        <h3 style="color: blue;">This listing is closed {% if listing.leader == user %} and you are the winner {% endif %}</h3>
+    {% endif %}
+    {% if watchlist == "Remove from watchlist" and user.is_authenticated %}
+    <div style="background-color: gray; color: white; width: fit-content; padding: 0px 3px; border-radius: 6px;">
+        Watchlist
+    </div>
+    {% endif %}
+    <img src="{{listing.image_url}}"> 
+    <div style="padding: 10px; min-height: 50px; background-color: lightgray;">
+    {{ listing.description }}
+    </div>
+    <div style="font-size: 35px; padding: 10px 0px; font-weight: 550;">
+        ${{ listing.highest_bid }}
+    </div>
+    {% if not listing.is_closed and user.is_authenticated %}
+    <div style="font-size: 10px;">
+        {{listing.number_of_bids}} bid(s) so far. 
+        {% if listing.leader == user %} 
+        Your bid is the current bid 
+        {% endif %}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" type="number" name="bid" min="{{listing.highest_bid}}" step="0.01" placeholder="Bid"/>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Place Bid" name="bidding_button">
+    </form>
+    {% endif %}
+    <br>
+    <h3>Details</h3>
+    <ul>
+        <li>Listed by: {{ listing.owner.username }}</li>
+        <li>Category: {{listing.category}}</li>
+    </ul>
+    {% if user.is_authenticated%}
+    <form method="post"> 
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" name="watchlist_button">{{watchlist}}</button>
+        {% if user == listing.owner %}
+        <button type="submit" class="btn btn-primary" name="close_listing">Close listing</button>
+        {% endif%}
+    </form>
+
+    {% endif %}
+
+    <div style="background-color: lightgray; margin-top: 30px; padding: 20px;">
+            <h2>Comments</h2>
+            {% if user.is_authenticated %}
+            <form method="post"> 
+                {% csrf_token %}
+                    <input type="submit" value="Post comment">
+                    <br>
+                    <textarea name="comment"></textarea>
+            </form>
+            {% endif %}
+        {% for comment in comments %}
+        <div style="margin-top: 15px; background-color: white; min-height: 50px; box-shadow: 5px 5px;">
+            <h4>{{comment.poster.username}}</h4>
+            {{comment.text}}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

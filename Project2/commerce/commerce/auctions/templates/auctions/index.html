@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ header }}</h2>
+    <div class="container">
+        {% for listing in listings %}
+        <a href="/view_listing/{{ listing.name }}" style="color: black;">
+            <div class="row">
+                <div class="left">
+                    <img src="{{listing.image_url}}">
+                </div>
+                <div class="right">
+                    <h3>{{ listing.name }}</h3>
+                    <b>Price:</b> {{ listing.highest_bid }}
+                    <br>
+                    {{ listing.description }}
+                    <br>
+                    <small>Created {{listing.time_of_creation}}</small>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}
