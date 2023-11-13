@@ -1,0 +1,15 @@
+<div class="card" style="box-shadow: 5px 5px grey; margin: 10px">
+  <div class="card-body text-start">
+    <h3 class="card-title">{{ post.poster.email }}</h3>
+    <p class="card-text">{{ post.content }}</p>
+    <hr />
+    <p class="card-text">
+      <small class="text-muted">Posted: {{ post.stamp }}</small>
+    </p>
+    <p class="card-text">
+      <small class="text-muted">Likes: {{ post.likes.length }}</small>
+    </p>
+    <button class="btn btn-link" (click)="onLike()">Like</button>
+    <button class="btn btn-link" (click)="onComment()">Comment</button>
+  </div>
+</div>
