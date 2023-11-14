@@ -1,10 +1,8 @@
-import { Component, Signal, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from './post/post.component';
 import { Post } from '../../shared/models';
-import { DataFetchingService } from '../../data-fetching.service';
-import { Observable } from 'rxjs';
+import { DataFetchingService as DatabaseService } from '../../data-fetching.service';
 
 @Component({
   selector: 'app-post-feed',
@@ -16,7 +14,7 @@ import { Observable } from 'rxjs';
 export class PostFeedComponent {
   posts: Signal<Post[]>;
 
-  constructor(private fetchService: DataFetchingService) {
-    this.posts = fetchService.fetchPosts();
+  constructor(private fetchService: DatabaseService) {
+    this.posts = fetchService.posts;
   }
 }

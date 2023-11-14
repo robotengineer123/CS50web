@@ -19,6 +19,11 @@ export class DataFetchingService {
   }
 
   updatePost(post: Post) {
-    this.http.put()
+    this.http.put('api/' + post.id, post);
+    this.postsSignal.update((posts) => {
+      const index = posts.findIndex((val) => val.id === post.id);
+      posts[index] = post;
+      return posts;
+    });
   }
 }
